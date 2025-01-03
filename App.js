@@ -1,23 +1,59 @@
-import React from "react";
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
+// App.js
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Picker } from "@react-native-picker/picker";
 
 const Drawer = createDrawerNavigator();
 
-const NotesScreen = () => {
+const NotesScreen = ({ navigation }) => {
+  const [selectedSubject, setSelectedSubject] = useState("");
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Notes Taker</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.openDrawer()}
+        >
+          <Text style={styles.menuButtonText}>☰</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Notes Taker</Text>
+      </View>
+
+      {/* Subject Dropdown */}
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Select Subject:</Text>
-        <TextInput style={styles.input} placeholder="Subject" />
+        <View style={styles.dropdown}>
+          <Picker
+            selectedValue={selectedSubject}
+            onValueChange={(itemValue) => setSelectedSubject(itemValue)}
+          >
+            <Picker.Item label="Select a subject" value="" />
+            <Picker.Item label="Math" value="math" />
+            <Picker.Item label="Science" value="science" />
+            <Picker.Item label="History" value="history" />
+          </Picker>
+        </View>
       </View>
+
+      {/* Note Input */}
       <TextInput
         style={[styles.input, styles.noteInput]}
         placeholder="Make note here"
         multiline
       />
+
+      {/* Save Button */}
       <TouchableOpacity style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
@@ -59,10 +95,23 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
   },
-  title: {
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  menuButton: {
+    padding: 10,
+  },
+  menuButtonText: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   inputContainer: {
     marginBottom: 15,
@@ -70,6 +119,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    overflow: "hidden",
+    backgroundColor: "#f9f9f9",
   },
   input: {
     borderWidth: 1,
