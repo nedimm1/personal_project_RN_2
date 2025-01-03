@@ -21,11 +21,12 @@ const NotesScreen = ({ navigation }) => {
         >
           <Text style={styles.menuButtonText}>☰</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>School Notes Taker</Text>
+        <Text style={styles.headerTitle}>Notes Taker</Text>
       </View>
 
       {/* Subject Dropdown */}
       <View style={styles.inputContainer}>
+        <Text style={styles.label}>Select Subject:</Text>
         <View style={styles.dropdown}>
           <Picker
             selectedValue={selectedSubject}

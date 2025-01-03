@@ -1,14 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet, Switch } from "react-native";
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
 
-const SettingsScreen = () => {
+const SettingsScreen = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = React.useState(false);
 
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.openDrawer()}
+        >
+          <Text style={styles.menuButtonText}>☰</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Settings</Text>
+      </View>
+
+      {/* Settings Options */}
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Enable Notifications</Text>
         <Switch
@@ -30,10 +41,22 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
   },
-  title: {
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  menuButton: {
+    padding: 10,
+  },
+  menuButtonText: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 24,
+    fontWeight: "bold",
     textAlign: "center",
   },
   settingItem: {
