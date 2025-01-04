@@ -1,7 +1,14 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput } from "react-native";
 
 const SubjectsScreen = ({ navigation }) => {
+  const [creatingSubject, setCreatingSubject] = useState(false);
+  const [subjectName, setSubjectName] = useState("");
+
+  function handleCreateSubject() {
+    setCreatingSubject((prev) => !prev);
+  }
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -15,7 +22,23 @@ const SubjectsScreen = ({ navigation }) => {
         <Text style={styles.headerTitle}>Subjects</Text>
       </View>
 
-      <Text style={styles.contentText}>List of subjects will appear here.</Text>
+      <View>
+        <Button onPress={handleCreateSubject} title="New Subject" />
+        <View
+          style={[
+            styles.subjectForm,
+            { display: creatingSubject ? "flex" : "none" },
+          ]}
+        >
+          <Text>Subject Name:</Text>
+          <TextInput
+            value={subjectName}
+            onChangeText={(text) => setSubjectName(text)}
+            placeholder="Enter subject name"
+          />
+          <Button onPress={handleCreateSubject} title="Create a Subject" />
+        </View>
+      </View>
     </View>
   );
 };
@@ -46,8 +69,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  contentText: {
-    fontSize: 16,
-    textAlign: "center",
+  subjectForm: {
+    marginTop: 20,
   },
 });

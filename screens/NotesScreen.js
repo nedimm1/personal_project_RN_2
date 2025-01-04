@@ -26,7 +26,6 @@ const NotesScreen = ({ navigation }) => {
 
       {/* Subject Dropdown */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Select Subject:</Text>
         <View style={styles.dropdown}>
           <Picker
             selectedValue={selectedSubject}

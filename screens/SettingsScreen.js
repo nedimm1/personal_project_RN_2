@@ -1,8 +1,8 @@
-import React from "react";
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
+import {useState} from "react";
 
 const SettingsScreen = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
@@ -17,17 +17,6 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={styles.menuButtonText}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
-      </View>
-
-      {/* Settings Options */}
-      <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Enable Notifications</Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#007BFF" : "#f4f3f4"}
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
       </View>
     </View>
   );
