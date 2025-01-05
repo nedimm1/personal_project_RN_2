@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput } from "react-native";
+import { AppContext } from "../components/AppContext";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
-  const [subjectName, setSubjectName] = useState("");
+  const {subjectName, setSubjectName} = useContext(AppContext)
 
   function handleCreateSubject() {
     setCreatingSubject((prev) => !prev);
+    console.log(subjectName)
+  }
+
+  function handleCreatingSubject(){
+    setCreatingSubject(true)
   }
 
   return (
@@ -23,7 +29,7 @@ const SubjectsScreen = ({ navigation }) => {
       </View>
 
       <View>
-        <Button onPress={handleCreateSubject} title="New Subject" />
+        <Button onPress={handleCreatingSubject} title="New Subject" />
         <View
           style={[
             styles.subjectForm,
@@ -32,7 +38,6 @@ const SubjectsScreen = ({ navigation }) => {
         >
           <Text>Subject Name:</Text>
           <TextInput
-            value={subjectName}
             onChangeText={(text) => setSubjectName(text)}
             placeholder="Enter subject name"
           />
