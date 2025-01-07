@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,12 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { AppContext } from "../components/AppContext";
 
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
+  const { subjectName, setSubjectName, subjects, sSubjects } =
+    useContext(AppContext);
 
   return (
     <View style={styles.container}>
@@ -31,10 +34,13 @@ const NotesScreen = ({ navigation }) => {
             selectedValue={selectedSubject}
             onValueChange={(itemValue) => setSelectedSubject(itemValue)}
           >
-            <Picker.Item label="Select a subject" value="" />
-            <Picker.Item label="Math" value="math" />
-            <Picker.Item label="Science" value="science" />
-            <Picker.Item label="History" value="history" />
+            {subjects.map((item, index) => (
+              <Picker.Item
+                label={item.subjectName}
+                value={item.index}
+                key={index}
+              />
+            ))}
           </Picker>
         </View>
       </View>
