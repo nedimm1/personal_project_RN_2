@@ -1,18 +1,34 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import { AppContext } from "../components/AppContext";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
-  const {subjectName, setSubjectName} = useContext(AppContext)
+  const { subjectName, setSubjectName, subjects, sSubjects } =
+    useContext(AppContext);
+
+  let i = 0;
 
   function handleCreateSubject() {
     setCreatingSubject((prev) => !prev);
-    console.log(subjectName)
+    console.log(subjectName);
+    i++;
+    sSubjects((prevState) => [
+      ...prevState,
+      { subjectName, notes: ["test"], index: i },
+    ]);
   }
 
-  function handleCreatingSubject(){
-    setCreatingSubject(true)
+  function handleCreatingSubject() {
+    setCreatingSubject(true);
   }
 
   return (
@@ -44,6 +60,15 @@ const SubjectsScreen = ({ navigation }) => {
           <Button onPress={handleCreateSubject} title="Create a Subject" />
         </View>
       </View>
+
+      <ScrollView>
+        {subjects.map((item, index) => (
+          <View key={index}>
+            <Text>{item.subjectName}</Text>
+            <Text>{item.notes}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
