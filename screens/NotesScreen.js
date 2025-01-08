@@ -11,8 +11,21 @@ import { AppContext } from "../components/AppContext";
 
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
-  const { subjectName, setSubjectName, subjects, sSubjects } =
-    useContext(AppContext);
+  const [note, setNote] = useState("");
+  const { subjects, setSubjects } = useContext(AppContext);
+
+  function handleSaveNote() {
+    if (!note.trim() || !selectedSubject) return; // Prevent empty notes or unselected subject
+
+    setSubjects((prevState) =>
+      prevState.map((item) =>
+        item.subjectName === selectedSubject
+          ? { ...item, notes: [...item.notes, note] }
+          : item
+      )
+    );
+    setNote(""); // Clear note input
+  }
 
   return (
     <View style={styles.container}>
@@ -34,11 +47,12 @@ const NotesScreen = ({ navigation }) => {
             selectedValue={selectedSubject}
             onValueChange={(itemValue) => setSelectedSubject(itemValue)}
           >
-            {subjects.map((item, index) => (
+            <Picker.Item label="Select a subject" value="" />
+            {subjects.map((item) => (
               <Picker.Item
                 label={item.subjectName}
-                value={item.index}
-                key={index}
+                value={item.subjectName}
+                key={item.subjectName}
               />
             ))}
           </Picker>
@@ -50,10 +64,12 @@ const NotesScreen = ({ navigation }) => {
         style={[styles.input, styles.noteInput]}
         placeholder="Make note here"
         multiline
+        value={note}
+        onChangeText={(newNote) => setNote(newNote)}
       />
 
       {/* Save Button */}
-      <TouchableOpacity style={styles.saveButton}>
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveNote}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
     </View>
@@ -88,10 +104,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
   },
   dropdown: {
     borderWidth: 1,

@@ -1,3 +1,4 @@
+// SubjectsScreen Component
 import React, { useState, useContext } from "react";
 import {
   View,
@@ -12,23 +13,18 @@ import { AppContext } from "../components/AppContext";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
-  const { subjectName, setSubjectName, subjects, sSubjects } =
-    useContext(AppContext);
-
-  let i = 0;
+  const [subjectName, setSubjectName] = useState("");
+  const { subjects, setSubjects } = useContext(AppContext);
 
   function handleCreateSubject() {
-    setCreatingSubject((prev) => !prev);
-    console.log(subjectName);
-    i++;
-    sSubjects((prevState) => [
-      ...prevState,
-      { subjectName, notes: ["test"], index: i },
-    ]);
-  }
+    if (!subjectName.trim()) return; // Prevent empty subject names
 
-  function handleCreatingSubject() {
-    setCreatingSubject(true);
+    setSubjects((prevState) => [
+      ...prevState,
+      { subjectName, notes: [] },
+    ]);
+    setSubjectName(""); // Clear input
+    setCreatingSubject(false); // Close form
   }
 
   return (
@@ -45,27 +41,33 @@ const SubjectsScreen = ({ navigation }) => {
       </View>
 
       <View>
-        <Button onPress={handleCreatingSubject} title="New Subject" />
+        <Button onPress={() => setCreatingSubject(true)} title="New Subject" />
         <View
-          style={[
-            styles.subjectForm,
-            { display: creatingSubject ? "flex" : "none" },
-          ]}
+          style={
+            creatingSubject
+              ? styles.subjectForm
+              : { display: "none" }
+          }
         >
           <Text>Subject Name:</Text>
           <TextInput
+            value={subjectName}
             onChangeText={(text) => setSubjectName(text)}
             placeholder="Enter subject name"
           />
-          <Button onPress={handleCreateSubject} title="Create a Subject" />
+          <Button onPress={handleCreateSubject} title="Create Subject" />
         </View>
       </View>
 
       <ScrollView>
-        {subjects.map((item, index) => (
-          <View key={index}>
-            <Text>{item.subjectName}</Text>
-            <Text>{item.notes}</Text>
+        {subjects.map((item) => (
+          <View key={item.subjectName} style={styles.subjectItem}>
+            <Text style={styles.subjectName}>{item.subjectName}</Text>
+            {item.notes.map((note, idx) => (
+              <Text key={idx} style={styles.noteText}>
+                - {note}
+              </Text>
+            ))}
           </View>
         ))}
       </ScrollView>
@@ -101,5 +103,19 @@ const styles = StyleSheet.create({
   },
   subjectForm: {
     marginTop: 20,
+  },
+  subjectItem: {
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 5,
+  },
+  subjectName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  noteText: {
+    fontSize: 16,
+    marginLeft: 10,
   },
 });
