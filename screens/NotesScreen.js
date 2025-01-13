@@ -15,16 +15,19 @@ const NotesScreen = ({ navigation }) => {
   const { subjects, setSubjects } = useContext(AppContext);
 
   function handleSaveNote() {
-    if (!note.trim() || !selectedSubject) return; // Prevent empty notes or unselected subject
+    if (!note.trim() || !selectedSubject) return;
 
     setSubjects((prevState) =>
       prevState.map((item) =>
         item.subjectName === selectedSubject
-          ? { ...item, notes: [...item.notes, note] }
+          ? {
+              ...item,
+              notes: [...item.notes, { noteText: note }],
+            }
           : item
       )
     );
-    setNote(""); // Clear note input
+    setNote("");
   }
 
   return (

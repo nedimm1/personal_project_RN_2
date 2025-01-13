@@ -1,4 +1,3 @@
-// SubjectsScreen Component
 import React, { useState, useContext } from "react";
 import {
   View,
@@ -17,19 +16,34 @@ const SubjectsScreen = ({ navigation }) => {
   const { subjects, setSubjects } = useContext(AppContext);
 
   function handleCreateSubject() {
-    if (!subjectName.trim()) return; // Prevent empty subject names
-
+    if (!subjectName.trim()) return;
     setSubjects((prevState) => [
       ...prevState,
-      { subjectName, notes: [] },
+      {
+        subjectName,
+        notes: [{ noteText: "" }],
+      },
     ]);
-    setSubjectName(""); // Clear input
-    setCreatingSubject(false); // Close form
+    setSubjectName("");
+    setCreatingSubject(false);
+  }
+
+  function handleDeleteNote(subjectIndex, noteIndex) {
+    setSubjects((prevSubjects) =>
+      prevSubjects.map((subject, sIdx) => {
+        if (sIdx === subjectIndex) {
+          return {
+            ...subject,
+            notes: subject.notes.filter((_, nIdx) => nIdx !== noteIndex),
+          };
+        }
+        return subject;
+      })
+    );
   }
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.menuButton}
@@ -43,11 +57,7 @@ const SubjectsScreen = ({ navigation }) => {
       <View>
         <Button onPress={() => setCreatingSubject(true)} title="New Subject" />
         <View
-          style={
-            creatingSubject
-              ? styles.subjectForm
-              : { display: "none" }
-          }
+          style={creatingSubject ? styles.subjectForm : { display: "none" }}
         >
           <Text>Subject Name:</Text>
           <TextInput
@@ -60,13 +70,17 @@ const SubjectsScreen = ({ navigation }) => {
       </View>
 
       <ScrollView>
-        {subjects.map((item) => (
+        {subjects.map((item, subjectIndex) => (
           <View key={item.subjectName} style={styles.subjectItem}>
             <Text style={styles.subjectName}>{item.subjectName}</Text>
-            {item.notes.map((note, idx) => (
-              <Text key={idx} style={styles.noteText}>
-                - {note}
-              </Text>
+            {item.notes.map((note, noteIndex) => (
+              <View key={noteIndex}>
+                <Text style={styles.noteText}>- {note.noteText}</Text>
+                <Button
+                  onPress={() => handleDeleteNote(subjectIndex, noteIndex)}
+                  title="Delete"
+                />
+              </View>
             ))}
           </View>
         ))}
