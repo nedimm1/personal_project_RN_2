@@ -19,10 +19,7 @@ const SubjectsScreen = ({ navigation }) => {
     if (!subjectName.trim()) return;
     setSubjects((prevState) => [
       ...prevState,
-      {
-        subjectName,
-        notes: [{ noteText: "" }],
-      },
+      { subjectName, notes: [{ noteText: "" }] },
     ]);
     setSubjectName("");
     setCreatingSubject(false);
@@ -30,15 +27,14 @@ const SubjectsScreen = ({ navigation }) => {
 
   function handleDeleteNote(subjectIndex, noteIndex) {
     setSubjects((prevSubjects) =>
-      prevSubjects.map((subject, sIdx) => {
-        if (sIdx === subjectIndex) {
-          return {
-            ...subject,
-            notes: subject.notes.filter((_, nIdx) => nIdx !== noteIndex),
-          };
-        }
-        return subject;
-      })
+      prevSubjects.map((subject, sIdx) =>
+        sIdx === subjectIndex
+          ? {
+              ...subject,
+              notes: subject.notes.filter((_, nIdx) => nIdx !== noteIndex),
+            }
+          : subject
+      )
     );
   }
 
@@ -53,7 +49,6 @@ const SubjectsScreen = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Subjects</Text>
       </View>
-
       <View>
         <Button onPress={() => setCreatingSubject(true)} title="New Subject" />
         <View
@@ -68,18 +63,26 @@ const SubjectsScreen = ({ navigation }) => {
           <Button onPress={handleCreateSubject} title="Create Subject" />
         </View>
       </View>
-
       <ScrollView>
         {subjects.map((item, subjectIndex) => (
           <View key={item.subjectName} style={styles.subjectItem}>
             <Text style={styles.subjectName}>{item.subjectName}</Text>
             {item.notes.map((note, noteIndex) => (
-              <View key={noteIndex}>
+              <View
+                key={noteIndex}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 5,
+                }}
+              >
                 <Text style={styles.noteText}>- {note.noteText}</Text>
-                <Button
+                <TouchableOpacity
+                  style={styles.deleteButton}
                   onPress={() => handleDeleteNote(subjectIndex, noteIndex)}
-                  title="Delete"
-                />
+                >
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
               </View>
             ))}
           </View>
@@ -89,13 +92,11 @@ const SubjectsScreen = ({ navigation }) => {
   );
 };
 
-export default SubjectsScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#f4f4f4",
   },
   header: {
     flexDirection: "row",
@@ -104,32 +105,62 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 10,
+    backgroundColor: "#007BFF",
+    borderRadius: 5,
   },
   menuButtonText: {
-    fontSize: 24,
-    fontWeight: "bold",
+    color: "#fff",
+    fontSize: 20,
   },
   headerTitle: {
     flex: 1,
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "600",
     textAlign: "center",
+    color: "#333",
   },
   subjectForm: {
     marginTop: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    elevation: 2,
   },
   subjectItem: {
     marginBottom: 15,
-    padding: 10,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 5,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    elevation: 2,
   },
   subjectName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
+    marginBottom: 8,
+    color: "#333",
   },
   noteText: {
     fontSize: 16,
     marginLeft: 10,
+    color: "#555",
+  },
+  deleteButton: {
+    backgroundColor: "#dc3545",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    alignSelf: "flex-start",
+    marginLeft: 10,
+  },
+  deleteButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "500",
   },
 });
+
+export default SubjectsScreen;
