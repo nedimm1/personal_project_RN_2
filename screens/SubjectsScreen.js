@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { AppContext } from "../components/AppContext";
+import DeleatButton from "../components/DeleatButton";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
@@ -77,14 +78,13 @@ const SubjectsScreen = ({ navigation }) => {
                 }}
               >
                 <Text style={styles.noteText}>- {note.noteText}</Text>
-                <TouchableOpacity
-                  style={styles.deleteButton}
+                <DeleatButton
                   onPress={() => handleDeleteNote(subjectIndex, noteIndex)}
-                >
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
+                  title="delete"
+                />
               </View>
             ))}
+            <DeleatButton title="delete"></DeleatButton>
           </View>
         ))}
       </ScrollView>
