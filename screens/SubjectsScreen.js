@@ -20,10 +20,20 @@ const SubjectsScreen = ({ navigation }) => {
     if (!subjectName.trim()) return;
     setSubjects((prevState) => [
       ...prevState,
-      { subjectName, notes: [{ noteText: "" }] },
+      {
+        id: Date.now(),
+        subjectName,
+        notes: [{ noteText: "" }],
+      },
     ]);
     setSubjectName("");
     setCreatingSubject(false);
+  }
+
+  function handleDeleteSubject(subjectId) {
+    setSubjects((prevSubjects) =>
+      prevSubjects.filter((subject) => subject.id !== subjectId)
+    );
   }
 
   function handleDeleteNote(subjectIndex, noteIndex) {
@@ -66,7 +76,7 @@ const SubjectsScreen = ({ navigation }) => {
       </View>
       <ScrollView>
         {subjects.map((item, subjectIndex) => (
-          <View key={item.subjectName} style={styles.subjectItem}>
+          <View key={item.id} style={styles.subjectItem}>
             <Text style={styles.subjectName}>{item.subjectName}</Text>
             {item.notes.map((note, noteIndex) => (
               <View
@@ -84,7 +94,10 @@ const SubjectsScreen = ({ navigation }) => {
                 />
               </View>
             ))}
-            <DeleatButton title="delete"></DeleatButton>
+            <DeleatButton
+              title="Delete Subject"
+              onPress={() => handleDeleteSubject(item.id)}
+            />
           </View>
         ))}
       </ScrollView>
