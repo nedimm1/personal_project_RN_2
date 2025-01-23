@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../components/AppContext";
+import storeNote from "../components/http";
 
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -24,6 +25,7 @@ const NotesScreen = ({ navigation }) => {
       )
     );
     setNote("");
+    storeNote(note);
   }
 
   return (
