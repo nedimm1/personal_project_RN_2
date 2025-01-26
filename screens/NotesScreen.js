@@ -9,13 +9,14 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../components/AppContext";
 import storeNote from "../components/http";
+import { postNote } from "../firebase";
 
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [note, setNote] = useState("");
   const { subjects, setSubjects } = useContext(AppContext);
 
-  function handleSaveNote() {
+  const handleSaveNote = async () => {
     if (!note.trim() || !selectedSubject) return;
     setSubjects((prevState) =>
       prevState.map((item) =>
@@ -24,9 +25,9 @@ const NotesScreen = ({ navigation }) => {
           : item
       )
     );
+    await postNote({ noteText: note, subjectName: selectedSubject });
     setNote("");
-    storeNote(note);
-  }
+  };
 
   return (
     <View style={styles.container}>
