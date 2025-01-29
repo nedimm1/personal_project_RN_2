@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../components/AppContext";
-import storeNote from "../components/http";
 import { postNote } from "../firebase";
 
 const NotesScreen = ({ navigation }) => {
