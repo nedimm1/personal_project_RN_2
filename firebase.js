@@ -8,3 +8,16 @@ export const getNotes = async () => {
 export const postNote = async (note) => {
   return firebase().ref("note").push(note);
 };
+
+export const fetchNotes = async () => {
+  const response = await fetch("https://schoolnotestaker1-default-rtdb.firebaseio.com/note.json");
+  const data = await response.json();
+  const notes = [];
+  for (const key in data) {
+    notes.push({
+      id: key,
+      ...data[key],
+    });
+  }
+  console.log(notes)
+};

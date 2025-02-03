@@ -9,11 +9,16 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../components/AppContext";
 import { postNote } from "../firebase";
-
+import { fetchNotes } from "../firebase";
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [note, setNote] = useState("");
   const { subjects, setSubjects } = useContext(AppContext);
+
+  function handleSaveButton(){
+    handleSaveNote()
+    fetchNotes()
+  }
 
   const handleSaveNote = async () => {
     if (!note.trim() || !selectedSubject) return;
@@ -63,7 +68,7 @@ const NotesScreen = ({ navigation }) => {
         value={note}
         onChangeText={(newNote) => setNote(newNote)}
       />
-      <TouchableOpacity style={styles.saveButton} onPress={handleSaveNote}>
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
     </View>
