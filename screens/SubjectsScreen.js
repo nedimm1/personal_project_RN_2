@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { AppContext } from "../components/AppContext";
 import DeleatButton from "../components/DeleatButton";
+import SpecialNotes from "../components/SpecialNotes";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
@@ -101,6 +102,9 @@ const SubjectsScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
+      <View style={styles.specialNotesContainer}>
+        <SpecialNotes />
+      </View>
     </View>
   );
 };
@@ -174,6 +178,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
+  specialNotesContainer: {
+    marginTop: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    elevation: 2,
+  },
 });
 
 export default SubjectsScreen;
+

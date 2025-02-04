@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,17 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../components/AppContext";
-import { postNote } from "../firebase";
+import { fetchSpecialNotes, postNote } from "../firebase";
 import { fetchNotes } from "../firebase";
+
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [note, setNote] = useState("");
-  const { subjects, setSubjects } = useContext(AppContext);
+  const { subjects, setSubjects, setSpecialNotes } = useContext(AppContext);
 
-  function handleSaveButton(){
-    handleSaveNote()
-    fetchNotes()
+  async function handleSaveButton() {
+    await handleSaveNote();
+    fetchNotes();
   }
 
   const handleSaveNote = async () => {
@@ -32,6 +33,10 @@ const NotesScreen = ({ navigation }) => {
     await postNote({ noteText: note, subjectName: selectedSubject });
     setNote("");
   };
+
+  useEffect(() => {
+    fetchSpecialNotes(setSpecialNotes);
+  }, []);
 
   return (
     <View style={styles.container}>

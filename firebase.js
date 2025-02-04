@@ -1,23 +1,22 @@
-import firebase from "@react-native-firebase/database";
+import database from "@react-native-firebase/database";
 
 export const getNotes = async () => {
-  const snapshot = await firebase().ref("note").once("value");
+  const snapshot = await database().ref("note").once("value");
   return snapshot.val();
 };
 
 export const postNote = async (note) => {
-  return firebase().ref("note").push(note);
+  return database().ref("note").push(note);
 };
 
 export const fetchNotes = async () => {
   const response = await fetch("https://schoolnotestaker1-default-rtdb.firebaseio.com/note.json");
   const data = await response.json();
-  const notes = [];
-  for (const key in data) {
-    notes.push({
-      id: key,
-      ...data[key],
-    });
-  }
-  console.log(notes)
+  console.log(Object.keys(data).map((key) => ({ id: key, ...data[key] })));
+};
+
+export const fetchSpecialNotes = async (setSpecialNotes) => {
+  const response = await fetch("https://schoolnotestaker1-default-rtdb.firebaseio.com/note.json");
+  const data = await response.json();
+  setSpecialNotes(Object.keys(data).map((key) => ({ id: key, noteText: data[key].noteText })));
 };
