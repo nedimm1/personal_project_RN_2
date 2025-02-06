@@ -15,8 +15,10 @@ export const fetchNotes = async () => {
   console.log(Object.keys(data).map((key) => ({ id: key, ...data[key] })));
 };
 
+
 export const fetchSpecialNotes = async (setSpecialNotes) => {
   const response = await fetch("https://schoolnotestaker1-default-rtdb.firebaseio.com/note.json");
   const data = await response.json();
-  setSpecialNotes(Object.keys(data).map((key) => ({ id: key, noteText: data[key].noteText })));
+  const notes = Object.keys(data).map((key) => ({ id: key, noteText: data[key].noteText }));
+  setSpecialNotes(notes);
 };

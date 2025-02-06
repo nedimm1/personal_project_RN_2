@@ -14,10 +14,10 @@ import { fetchNotes } from "../firebase";
 const NotesScreen = ({ navigation }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [note, setNote] = useState("");
-  const { subjects, setSubjects, setSpecialNotes } = useContext(AppContext);
+  const { subjects, setSubjects, setSpecialNotes, specialNotes } = useContext(AppContext);
 
   async function handleSaveButton() {
-    await handleSaveNote();
+   handleSaveNote();
     fetchNotes();
   }
 
@@ -32,11 +32,10 @@ const NotesScreen = ({ navigation }) => {
     );
     await postNote({ noteText: note, subjectName: selectedSubject });
     setNote("");
+    await fetchSpecialNotes(setSpecialNotes);
+    console.log(specialNotes)
+    
   };
-
-  useEffect(() => {
-    fetchSpecialNotes(setSpecialNotes);
-  }, []);
 
   return (
     <View style={styles.container}>

@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import { AppContext } from "../components/AppContext";
 import DeleatButton from "../components/DeleatButton";
-import SpecialNotes from "../components/SpecialNotes";
+import SpecialNotesList from "../components/SpecialNotesList";
 
 const SubjectsScreen = ({ navigation }) => {
   const [creatingSubject, setCreatingSubject] = useState(false);
   const [subjectName, setSubjectName] = useState("");
-  const { subjects, setSubjects } = useContext(AppContext);
+  const { subjects, setSubjects, specialNotes } = useContext(AppContext);
 
   function handleCreateSubject() {
     if (!subjectName.trim()) return;
@@ -31,11 +31,6 @@ const SubjectsScreen = ({ navigation }) => {
     setCreatingSubject(false);
   }
 
-  function handleDeleteSubject(subjectId) {
-    setSubjects((prevSubjects) =>
-      prevSubjects.filter((subject) => subject.id !== subjectId)
-    );
-  }
 
   function handleDeleteNote(subjectIndex, noteIndex) {
     setSubjects((prevSubjects) =>
@@ -102,8 +97,8 @@ const SubjectsScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
-      <View style={styles.specialNotesContainer}>
-        <SpecialNotes />
+      <View>
+        <SpecialNotesList />
       </View>
     </View>
   );
